@@ -11,7 +11,7 @@ var sum = 0;
   await page.goto('https://music.163.com/#/playlist?id=452039124');
   try {
     let iframe = await page.frames().find(frame => frame.name() === 'contentFrame');
-    console.log(iframe, escapeToHtml("a&quot;b"));
+    console.log(iframe);
     let songIds = await iframe.$$eval('.m-table tbody .f-cb .tt a', elems => elems.map(e => e.href.match(/\?id=([0-9]+)/)[1]));
     let songTitles = await iframe.$$eval('.m-table tbody .f-cb .tt a b', elems => elems.map(
       (e) => {
