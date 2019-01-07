@@ -7,12 +7,24 @@ const iconv = require('iconv-lite');
 
 (async () => {
   /* 注意，更改此处来更变要下载歌词的歌单 */
-  let songs = await crawlList(452039124);
-  downloadLyrics(songs);
+  process.stdin.resume();
+  Log("请输入playlist id: ");
+  process.stdin.on("data",async (chunk)=>{
+    let songs = await crawlList(chunk.toString().trim());
+    downloadLyrics(songs);
+  });
 })()
 
 async function crawlList(playlistId) {
+  // 在项目当前目录创建一个lyrics目录，try-catch防止目录存在后程序异常退出
+  try {
+    fs.mkdirSync("./lyrics");
+  } catch (e) {
+    // console.log(e);
+    console.log("mkdir filed: ",e.code)
+  }
   // 初始化puppeteer引擎并访问歌单url
+  console.log(`正在获取歌单列表(${playlistId})...`)
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(`https://music.163.com/#/playlist?id=${playlistId}`);
@@ -44,12 +56,6 @@ async function crawlList(playlistId) {
   return [];
 }
 async function getLyric(songId) {
-  // 在项目当前目录创建一个lyrics目录，try-catch防止目录存在后程序异常退出
-  try {
-    fs.mkdirSync("./lyrics");
-  } catch (e) {
-    console.log(e);
-  }
   // 使用fetch访问网易云音乐的api获取歌词信息
   const url = `http://music.163.com/api/song/media?id=${songId}`;
   let res = await fetch(url);

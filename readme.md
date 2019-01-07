@@ -15,12 +15,3 @@ pnpm i
 # run
 node app.js
 ```
-## Change playlist
-```bash
-# edit app.js:
-  vim app.js
-# find this line below:
-  let songs = await crawlList(452039124);
-# change this number to your own playlist id which you can find from your playlist url such as "https://music.163.com/#/playlist?id=452039124". Save the file and quit vim:
-  :!wq
-```
