@@ -8,7 +8,7 @@ const iconv = require('iconv-lite');
 (async () => {
   /* 注意，更改此处来更变要下载歌词的歌单 */
   process.stdin.resume();
-  Log("请输入playlist id: ");
+  process.stdout.write("请输入playlist id: ");
   process.stdin.on("data",async (chunk)=>{
     let songs = await crawlList(chunk.toString().trim());
     downloadLyrics(songs);
